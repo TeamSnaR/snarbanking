@@ -12,11 +12,13 @@
 	  <None Remove="Expenses\" />
 	  <None Remove="Expenses\GettingExpenses\" />
 	  <None Remove="Storage\" />
+	  <None Remove="Expenses\GettingExpenseDetails\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Expenses\" />
 	  <Folder Include="Expenses\GettingExpenses\" />
 	  <Folder Include="Storage\" />
+	  <Folder Include="Expenses\GettingExpenseDetails\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="MediatR" Version="12.0.1" />

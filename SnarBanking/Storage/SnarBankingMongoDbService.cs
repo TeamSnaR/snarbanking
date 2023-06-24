@@ -5,6 +5,7 @@ using MongoDB.Driver;
 
 using SnarBanking.Expenses;
 
+using static SnarBanking.Specifications;
 using static SnarBanking.Storage.Settings;
 
 namespace SnarBanking.Storage
@@ -27,13 +28,16 @@ namespace SnarBanking.Storage
             }
 
             public Task<List<Expense>> GetExpensesAsync(FilterDefinition<Expense>? match) => _expensesCollection.Find(match ?? _matchAll).ToListAsync();
-            public Task<Expense> GetOneExpenseAsync(FilterDefinition<Expense> match) => _expensesCollection.Find(match).FirstOrDefaultAsync();
+            public Task<Expense> GetOneExpenseAsync(ISpecification<Expense> specification) =>
+                _expensesCollection.Find(specification.IsSatisfiedBy()).FirstOrDefaultAsync();
+
             public Task CreateOneExpenseAsync(Expense expense) => _expensesCollection.InsertOneAsync(expense);
             public Task CreateManyExpensesAsync(IEnumerable<Expense> expenses) => _expensesCollection.InsertManyAsync(expenses);
             public Task DeleteManyExpensesAsync(FilterDefinition<Expense>? match) => _expensesCollection.DeleteManyAsync(match ?? _matchAll);
         }
 
-        public static IServiceCollection AddSnarBankingMongoDbService(this IServiceCollection services) => services.AddSingleton<SnarBankingMongoDbService>();
+        public static IServiceCollection AddSnarBankingMongoDbService(this IServiceCollection services) =>
+            services.AddSingleton<SnarBankingMongoDbService>();
 
         public static IApplicationBuilder ConfigureSnarBankingMongoDbSeed(this IApplicationBuilder app)
         {
