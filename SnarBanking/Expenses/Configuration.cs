@@ -1,6 +1,4 @@
-﻿using System;
-
-using Microsoft.AspNetCore.Routing;
+﻿using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
 using MongoDB.Driver;
@@ -8,8 +6,8 @@ using MongoDB.Driver;
 using SnarBanking.Expenses.GettingExpenseDetails;
 using SnarBanking.Expenses.GettingExpenses;
 
-using static SnarBanking.Specifications;
 using static SnarBanking.Storage.Service;
+using static SnarBanking.Storage.Specifications;
 
 namespace SnarBanking.Expenses
 {
@@ -21,7 +19,7 @@ namespace SnarBanking.Expenses
                 .AddTransient<Func<FilterDefinition<Expense>, Task<List<Expense>>>>(sp =>
                     sp.GetRequiredService<SnarBankingMongoDbService>().GetExpensesAsync
                 )
-                .AddTransient<Func<ISpecification<Expense>, Task<Expense>>>(sp =>
+                .AddTransient<Func<FilterDefinitionSpecification<Expense>, Task<Expense>>>(sp =>
                     sp.GetRequiredService<SnarBankingMongoDbService>().GetOneExpenseAsync
                 );
 

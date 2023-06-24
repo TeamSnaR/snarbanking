@@ -1,8 +1,6 @@
-﻿using System;
+﻿using MediatR;
 
-using MediatR;
-
-using static SnarBanking.Specifications;
+using static SnarBanking.Storage.Specifications;
 
 namespace SnarBanking.Expenses.GettingExpenseDetails
 {
@@ -20,9 +18,9 @@ namespace SnarBanking.Expenses.GettingExpenseDetails
 
         internal class ByIdHandler : IRequestHandler<ById, Expense>
         {
-            private readonly Func<ISpecification<Expense>, Task<Expense>> _getExpenseDetails;
+            private readonly Func<FilterDefinitionSpecification<Expense>, Task<Expense>> _getExpenseDetails;
 
-            public ByIdHandler(Func<ISpecification<Expense>, Task<Expense>> getExpenseDetails)
+            public ByIdHandler(Func<FilterDefinitionSpecification<Expense>, Task<Expense>> getExpenseDetails)
             {
                 _getExpenseDetails = getExpenseDetails;
             }

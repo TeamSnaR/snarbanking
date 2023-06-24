@@ -2,18 +2,14 @@
 
 using MongoDB.Driver;
 
+using SnarBanking.Core;
 using SnarBanking.Expenses;
 
-namespace SnarBanking
+namespace SnarBanking.Storage
 {
     public static class Specifications
     {
-        public interface ISpecification<T>
-        {
-            FilterDefinition<T> IsSatisfiedBy();
-        }
-
-        public abstract class Specification<T> : ISpecification<T>
+        public abstract class FilterDefinitionSpecification<T> : ISpecification<FilterDefinition<T>>
         {
             public virtual FilterDefinition<T> IsSatisfiedBy()
             {
@@ -21,9 +17,9 @@ namespace SnarBanking
             }
         }
 
-        public class MatchAll : Specification<Expense> { }
+        public class MatchAll : FilterDefinitionSpecification<Expense> { }
 
-        public class MatchAnyStore : Specification<Expense>
+        public class MatchAnyStore : FilterDefinitionSpecification<Expense>
         {
             private readonly IEnumerable<StringOrRegularExpression> _values;
 
@@ -38,7 +34,7 @@ namespace SnarBanking
                         .StringIn(expense => expense.Store, _values);
         }
 
-        public class MatchById : Specification<Expense>
+        public class MatchById : FilterDefinitionSpecification<Expense>
         {
             private readonly string _id;
 

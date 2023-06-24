@@ -5,8 +5,8 @@ using MongoDB.Driver;
 
 using SnarBanking.Expenses;
 
-using static SnarBanking.Specifications;
 using static SnarBanking.Storage.Settings;
+using static SnarBanking.Storage.Specifications;
 
 namespace SnarBanking.Storage
 {
@@ -28,7 +28,7 @@ namespace SnarBanking.Storage
             }
 
             public Task<List<Expense>> GetExpensesAsync(FilterDefinition<Expense>? match) => _expensesCollection.Find(match ?? _matchAll).ToListAsync();
-            public Task<Expense> GetOneExpenseAsync(ISpecification<Expense> specification) =>
+            public Task<Expense> GetOneExpenseAsync(FilterDefinitionSpecification<Expense> specification) =>
                 _expensesCollection.Find(specification.IsSatisfiedBy()).FirstOrDefaultAsync();
 
             public Task CreateOneExpenseAsync(Expense expense) => _expensesCollection.InsertOneAsync(expense);
