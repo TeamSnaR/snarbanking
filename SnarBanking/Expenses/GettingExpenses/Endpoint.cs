@@ -22,6 +22,7 @@ namespace SnarBanking.Expenses.GettingExpenses
                         var results = await mediator.Send(new GetExpenses.Query(), ct);
                         return Results.Ok(results);
                     })
+                .Produces(StatusCodes.Status200OK, typeof(Expense))
                 .Produces(StatusCodes.Status400BadRequest)
                 .Produces(StatusCodes.Status404NotFound);
 

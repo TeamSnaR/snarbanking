@@ -3,7 +3,11 @@
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
+using MongoDB.Driver;
+
 using SnarBanking.Expenses.GettingExpenses;
+
+using static SnarBanking.Storage.Service;
 
 namespace SnarBanking.Expenses
 {
@@ -11,6 +15,9 @@ namespace SnarBanking.Expenses
     {
         public static IServiceCollection AddExpensesServices(this IServiceCollection services)
         {
+            services.AddTransient<Func<FilterDefinition<Expense>, Task<List<Expense>>>>(sp =>
+                sp.GetRequiredService<SnarBankingMongoDbService>().GetExpensesAsync
+            );
             return services;
         }
         public static IEndpointRouteBuilder UseExpensesEndpoints(this IEndpointRouteBuilder endpoints)
