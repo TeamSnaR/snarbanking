@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnarBanking.Api", "SnarBanking.Api\SnarBanking.Api.csproj", "{957331D6-D508-402C-B544-6B404B80C3B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnarBanking", "SnarBanking\SnarBanking.csproj", "{89EDAAD5-06A7-4033-B63D-933B62FBF615}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,5 +14,15 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{957331D6-D508-402C-B544-6B404B80C3B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{957331D6-D508-402C-B544-6B404B80C3B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{957331D6-D508-402C-B544-6B404B80C3B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{957331D6-D508-402C-B544-6B404B80C3B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89EDAAD5-06A7-4033-B63D-933B62FBF615}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89EDAAD5-06A7-4033-B63D-933B62FBF615}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89EDAAD5-06A7-4033-B63D-933B62FBF615}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89EDAAD5-06A7-4033-B63D-933B62FBF615}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
