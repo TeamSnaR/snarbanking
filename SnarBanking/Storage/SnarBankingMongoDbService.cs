@@ -27,7 +27,7 @@ namespace SnarBanking.Storage
                 _matchAll = FilterDefinition<Expense>.Empty;
             }
 
-            public Task<List<Expense>> GetExpensesAsync(FilterDefinition<Expense>? match) => _expensesCollection.Find(match ?? _matchAll).ToListAsync();
+            public Task<List<Expense>> GetExpensesAsync(FilterDefinitionSpecification<Expense> specification) => _expensesCollection.Find(specification.IsSatisfiedBy()).ToListAsync();
             public Task<Expense> GetOneExpenseAsync(FilterDefinitionSpecification<Expense> specification) =>
                 _expensesCollection.Find(specification.IsSatisfiedBy()).FirstOrDefaultAsync();
 

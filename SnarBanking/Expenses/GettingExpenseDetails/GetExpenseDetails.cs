@@ -26,7 +26,7 @@ namespace SnarBanking.Expenses.GettingExpenseDetails
             }
             public Task<Expense> Handle(ById request, CancellationToken cancellationToken)
             {
-                var expense = _getExpenseDetails(new MatchById(request.Payload)) ?? throw new NullReferenceException("Expense not found");
+                var expense = _getExpenseDetails(new MatchByIdSpecification(request.Payload)) ?? throw new NullReferenceException("Expense not found");
                 return expense;
             }
         }

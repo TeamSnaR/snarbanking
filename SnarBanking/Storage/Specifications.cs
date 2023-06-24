@@ -17,13 +17,13 @@ namespace SnarBanking.Storage
             }
         }
 
-        public class MatchAll : FilterDefinitionSpecification<Expense> { }
+        public class MatchAllSpecification : FilterDefinitionSpecification<Expense> { }
 
-        public class MatchAnyStore : FilterDefinitionSpecification<Expense>
+        public class MatchAnyStoreSpecification : FilterDefinitionSpecification<Expense>
         {
             private readonly IEnumerable<StringOrRegularExpression> _values;
 
-            public MatchAnyStore(params string[] values)
+            public MatchAnyStoreSpecification(params string[] values)
             {
                 _values = values.Select(s => new StringOrRegularExpression(s));
             }
@@ -34,11 +34,11 @@ namespace SnarBanking.Storage
                         .StringIn(expense => expense.Store, _values);
         }
 
-        public class MatchById : FilterDefinitionSpecification<Expense>
+        public class MatchByIdSpecification : FilterDefinitionSpecification<Expense>
         {
             private readonly string _id;
 
-            public MatchById(string id)
+            public MatchByIdSpecification(string id)
             {
                 _id = id;
             }
