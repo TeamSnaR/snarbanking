@@ -16,13 +16,7 @@ namespace SnarBanking.Expenses
         public static IServiceCollection AddExpensesServices(this IServiceCollection services)
         {
             services
-                .AddTransient<Func<FilterDefinitionSpecification<Expense>, Task<List<Expense>>>>(sp =>
-                    sp.GetRequiredService<SnarBankingMongoDbService>().GetExpensesAsync
-                )
-                .AddTransient<Func<FilterDefinitionSpecification<Expense>, Task<Expense>>>(sp =>
-                    sp.GetRequiredService<SnarBankingMongoDbService>().GetOneExpenseAsync
-                );
-
+                .AddTransient<IGenericService<Expense>, ExpenseService>();
 
             return services;
         }

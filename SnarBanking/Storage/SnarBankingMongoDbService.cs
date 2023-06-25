@@ -6,7 +6,6 @@ using MongoDB.Driver;
 using SnarBanking.Expenses;
 
 using static SnarBanking.Storage.Settings;
-using static SnarBanking.Storage.Specifications;
 
 namespace SnarBanking.Storage
 {
@@ -14,35 +13,27 @@ namespace SnarBanking.Storage
     {
         public class SnarBankingMongoDbService
         {
-            private readonly IMongoCollection<Expense> _expensesCollection;
-            private readonly FilterDefinition<Expense> _matchAll;
-
-            public SnarBankingMongoDbService(SnarBankingDbSettings snarBankingDbSettings)
+            public SnarBankingMongoDbService(IMongoDatabase mongoDatabase, SnarBankingDbSettings snarBankingDbSettings)
             {
-                var settings = MongoClientSettings.FromConnectionString(snarBankingDbSettings.ConnectionString);
-                var client = new MongoClient(settings);
-                var database = client.GetDatabase(snarBankingDbSettings.DatabaseName);
-
-                _expensesCollection = database.GetCollection<Expense>(snarBankingDbSettings.DefaultCollectionName);
-                _matchAll = FilterDefinition<Expense>.Empty;
+                ExpensesCollection = mongoDatabase.GetCollection<Expense>(snarBankingDbSettings.DefaultCollectionName);
             }
 
-            public Task<List<Expense>> GetExpensesAsync(FilterDefinitionSpecification<Expense> specification) => _expensesCollection.Find(specification.IsSatisfiedBy()).ToListAsync();
-            public Task<Expense> GetOneExpenseAsync(FilterDefinitionSpecification<Expense> specification) =>
-                _expensesCollection.Find(specification.IsSatisfiedBy()).FirstOrDefaultAsync();
-
-            public Task CreateOneExpenseAsync(Expense expense) => _expensesCollection.InsertOneAsync(expense);
-            public Task CreateManyExpensesAsync(IEnumerable<Expense> expenses) => _expensesCollection.InsertManyAsync(expenses);
-            public Task DeleteManyExpensesAsync(FilterDefinition<Expense>? match) => _expensesCollection.DeleteManyAsync(match ?? _matchAll);
+            public IMongoCollection<Expense> ExpensesCollection { get; init; }
         }
 
         public static IServiceCollection AddSnarBankingMongoDbService(this IServiceCollection services) =>
-            services.AddSingleton<SnarBankingMongoDbService>();
+            services
+                .AddSingleton(sp =>
+                {
+                    var settings = sp.GetRequiredService<SnarBankingDbSettings>();
+                    var client = new MongoClient(MongoClientSettings.FromConnectionString(settings.ConnectionString));
 
-        public static IApplicationBuilder ConfigureSnarBankingMongoDbSeed(this IApplicationBuilder app)
+                    return client.GetDatabase(settings.DatabaseName);
+                })
+                .AddSingleton<SnarBankingMongoDbService>();
+
+        public static IApplicationBuilder ConfigureSnarBankingMongoDbDevelopmentSeed(this IApplicationBuilder app, string environment)
         {
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-
             if (environment == "Development")
             {
                 var snarBankingMongoDbService = app.ApplicationServices.CreateScope().ServiceProvider
@@ -55,13 +46,24 @@ namespace SnarBanking.Storage
 
         internal static SnarBankingMongoDbService EnsureCreated(this SnarBankingMongoDbService s)
         {
-            IEnumerable<Expense> seedExpenses = Enumerable.Range(1, 5).Select(item =>
+            static bool RandomNumberIsEven(int num) => num % 2 == 0;
+
+            IEnumerable<Expense> seedExpenses = Enumerable.Range(1, 53).Select(randomNumber =>
             {
-                return new Expense($"Description {item}", new Money(Currency.GBP, 10.50M + item), "Grocery", "Lidl", DateTimeOffset.UtcNow);
+                var expense = new Expense($"Expense description {randomNumber}", new Money(Currency.GBP, 10.50M + randomNumber), "Grocery", "Lidl", DateTimeOffset.UtcNow);
+
+                if (RandomNumberIsEven(randomNumber))
+                {
+                    expense.AddExpenseItem(new ExpenseItem($"Expense item {randomNumber}", new Money(Currency.GBP, 7.50M + randomNumber), randomNumber, "Food", UnitOfMeasure.Piece));
+                }
+
+                return expense;
+
+
             });
 
-            s.DeleteManyExpensesAsync(null).GetAwaiter().GetResult();
-            s.CreateManyExpensesAsync(seedExpenses).GetAwaiter().GetResult();
+            s.ExpensesCollection.DeleteManyAsync(_ => true).GetAwaiter().GetResult();
+            s.ExpensesCollection.InsertManyAsync(seedExpenses).GetAwaiter().GetResult();
 
             return s;
         }

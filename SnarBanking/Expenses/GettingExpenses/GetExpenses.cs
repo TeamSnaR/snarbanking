@@ -4,6 +4,7 @@ using MediatR;
 
 using MongoDB.Driver;
 
+using static SnarBanking.Expenses.Specifications;
 using static SnarBanking.Storage.Specifications;
 
 namespace SnarBanking.Expenses.GettingExpenses
@@ -15,15 +16,14 @@ namespace SnarBanking.Expenses.GettingExpenses
 
         internal class QueryHandler : IRequestHandler<Query, IReadOnlyList<Expense>>
         {
-            private readonly Func<FilterDefinitionSpecification<Expense>, Task<List<Expense>>> _getExpenses;
-
-            public QueryHandler(Func<FilterDefinitionSpecification<Expense>, Task<List<Expense>>> GetExpenses)
+            private readonly IGenericService<Expense> _expenseService;
+            public QueryHandler(IGenericService<Expense> expenseService)
             {
-                _getExpenses = GetExpenses;
+                _expenseService = expenseService;
             }
             public async Task<IReadOnlyList<Expense>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _getExpenses(new MatchAllSpecification());
+                return await _expenseService.GetAsync(new MatchAllSpecification());
             }
         }
     }
