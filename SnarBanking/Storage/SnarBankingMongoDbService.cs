@@ -46,7 +46,21 @@ namespace SnarBanking.Storage
 
         internal static SnarBankingMongoDbService EnsureCreated(this SnarBankingMongoDbService s)
         {
-            IEnumerable<Expense> seedExpenses = Enumerable.Range(1, 5).Select(item => new Expense($"Description {item}", new Money(Currency.GBP, 10.50M + item), "Grocery", "Lidl", DateTimeOffset.UtcNow));
+            static bool RandomNumberIsEven(int num) => num % 2 == 0;
+
+            IEnumerable<Expense> seedExpenses = Enumerable.Range(1, 53).Select(randomNumber =>
+            {
+                var expense = new Expense($"Expense description {randomNumber}", new Money(Currency.GBP, 10.50M + randomNumber), "Grocery", "Lidl", DateTimeOffset.UtcNow);
+
+                if (RandomNumberIsEven(randomNumber))
+                {
+                    expense.AddExpenseItem(new ExpenseItem($"Expense item {randomNumber}", new Money(Currency.GBP, 7.50M + randomNumber), randomNumber, "Food", UnitOfMeasure.Piece));
+                }
+
+                return expense;
+
+
+            });
 
             s.ExpensesCollection.DeleteManyAsync(_ => true).GetAwaiter().GetResult();
             s.ExpensesCollection.InsertManyAsync(seedExpenses).GetAwaiter().GetResult();

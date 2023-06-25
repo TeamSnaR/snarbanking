@@ -50,6 +50,20 @@ namespace SnarBanking.Expenses
         public float Quantity { get; set; } = 1;
         public string SubCategory { get; set; } = default!;
         public UnitOfMeasure UnitOfMeasture { get; set; } = default!;
+
+        private ExpenseItem()
+        {
+
+        }
+
+        public ExpenseItem(string description, Money pricePerUnit, float quantity, string subCategory, UnitOfMeasure unitOfMeasture)
+        {
+            Description = description;
+            PricePerUnit = pricePerUnit;
+            Quantity = quantity;
+            SubCategory = subCategory;
+            UnitOfMeasture = unitOfMeasture;
+        }
     }
 
     public record Money
