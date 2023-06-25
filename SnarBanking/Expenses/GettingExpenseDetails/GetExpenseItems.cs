@@ -4,6 +4,7 @@ using MediatR;
 
 using MongoDB.Driver;
 
+using static SnarBanking.Expenses.Specifications;
 using static SnarBanking.Storage.Specifications;
 
 namespace SnarBanking.Expenses.GettingExpenseDetails

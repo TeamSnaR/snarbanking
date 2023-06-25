@@ -1,5 +1,6 @@
 ﻿using MediatR;
 
+using static SnarBanking.Expenses.Specifications;
 using static SnarBanking.Storage.Specifications;
 
 namespace SnarBanking.Expenses.GettingExpenseDetails
