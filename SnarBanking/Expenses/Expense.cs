@@ -13,7 +13,7 @@ namespace SnarBanking.Expenses
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; } = default!;
         public DateTimeOffset PurchaseDate { get; set; }
-        public string? Description { get; set; } = default!;
+        public string? Description { get; set; }
         public Money Amount { get; set; } = default!;
         public string Category { get; set; } = default!;
         public string Store { get; set; } = default!;

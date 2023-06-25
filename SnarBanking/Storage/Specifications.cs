@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 using MongoDB.Driver;
 
 using SnarBanking.Core;
 using SnarBanking.Expenses;
+
+using static SnarBanking.Storage.Specifications;
 
 namespace SnarBanking.Storage
 {
@@ -17,7 +20,19 @@ namespace SnarBanking.Storage
             }
         }
 
-        public class MatchAllSpecification : FilterDefinitionSpecification<Expense> { }
+        public interface IFilterDefinitionSpecification<T> : ISpecification<FilterDefinition<T>>
+        {
+            public new FilterDefinition<T> IsSatisfiedBy() => DefaultIsSatisfiedBy(this);
+            protected static FilterDefinition<T> DefaultIsSatisfiedBy(ISpecification<FilterDefinition<T>> _)
+            {
+                return FilterDefinition<T>.Empty;
+            }
+        }
+
+        public class MatchAllSpecification : IFilterDefinitionSpecification<Expense>
+        {
+            public FilterDefinition<Expense> IsSatisfiedBy() => IFilterDefinitionSpecification<Expense>.DefaultIsSatisfiedBy(this);
+        }
 
         public class MatchAnyStoreSpecification : FilterDefinitionSpecification<Expense>
         {
@@ -34,7 +49,7 @@ namespace SnarBanking.Storage
                         .StringIn(expense => expense.Store, _values);
         }
 
-        public class MatchByIdSpecification : FilterDefinitionSpecification<Expense>
+        public class MatchByIdSpecification : IFilterDefinitionSpecification<Expense>
         {
             private readonly string _id;
 
@@ -43,10 +58,16 @@ namespace SnarBanking.Storage
                 _id = id;
             }
 
-            public override FilterDefinition<Expense> IsSatisfiedBy() =>
+            public FilterDefinition<Expense> IsSatisfiedBy() =>
                 Builders<Expense>.Filter
                     .Eq(expense => expense.Id, _id);
         }
+
+        public interface IProjector<TSource, IProjectionResult>
+        {
+            ProjectionDefinition<TSource, IProjectionResult> ProjectAs();
+        }
+
     }
 }
 

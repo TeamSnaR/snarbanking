@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Collections.Generic;
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 using MongoDB.Driver;
@@ -25,9 +27,24 @@ namespace SnarBanking.Storage
 
                 _expensesCollection = database.GetCollection<Expense>(snarBankingDbSettings.DefaultCollectionName);
                 _matchAll = FilterDefinition<Expense>.Empty;
+                ExpensesCollection = database.GetCollection<Expense>(snarBankingDbSettings.DefaultCollectionName);
             }
 
+            public IMongoCollection<Expense> ExpensesCollection { get; init; }
+
             public Task<List<Expense>> GetExpensesAsync(FilterDefinitionSpecification<Expense> specification) => _expensesCollection.Find(specification.IsSatisfiedBy()).ToListAsync();
+
+            public Task<IReadOnlyList<TNewProjection>> GetExpensesAsync<TNewProjection>(FilterDefinitionSpecification<Expense> specification,
+            IProjector<Expense, TNewProjection> projector
+            )
+            {
+
+                return _expensesCollection
+                    .Find(specification.IsSatisfiedBy())
+                    .Project(projector.ProjectAs())
+                    .ToListAsync().ContinueWith<IReadOnlyList<TNewProjection>>(list => list.Result);
+            }
+
             public Task<Expense> GetOneExpenseAsync(FilterDefinitionSpecification<Expense> specification) =>
                 _expensesCollection.Find(specification.IsSatisfiedBy()).FirstOrDefaultAsync();
 

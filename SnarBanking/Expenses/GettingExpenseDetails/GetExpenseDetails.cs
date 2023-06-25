@@ -18,16 +18,15 @@ namespace SnarBanking.Expenses.GettingExpenseDetails
 
         internal class ByIdHandler : IRequestHandler<ById, Expense>
         {
-            private readonly Func<FilterDefinitionSpecification<Expense>, Task<Expense>> _getExpenseDetails;
+            private readonly IGenericService<Expense> _expenseService;
 
-            public ByIdHandler(Func<FilterDefinitionSpecification<Expense>, Task<Expense>> getExpenseDetails)
+            public ByIdHandler(IGenericService<Expense> expenseService)
             {
-                _getExpenseDetails = getExpenseDetails;
+                _expenseService = expenseService;
             }
             public Task<Expense> Handle(ById request, CancellationToken cancellationToken)
             {
-                var expense = _getExpenseDetails(new MatchByIdSpecification(request.Payload)) ?? throw new NullReferenceException("Expense not found");
-                return expense;
+                return _expenseService.GetOneAsync(new MatchByIdSpecification(request.Payload)) ?? throw new NullReferenceException("Expense not found");
             }
         }
     }
