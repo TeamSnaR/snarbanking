@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 using MongoDB.Driver;
@@ -8,7 +6,6 @@ using MongoDB.Driver;
 using SnarBanking.Expenses;
 
 using static SnarBanking.Storage.Settings;
-using static SnarBanking.Storage.Specifications;
 
 namespace SnarBanking.Storage
 {
@@ -35,10 +32,8 @@ namespace SnarBanking.Storage
                 })
                 .AddSingleton<SnarBankingMongoDbService>();
 
-        public static IApplicationBuilder ConfigureSnarBankingMongoDbSeed(this IApplicationBuilder app)
+        public static IApplicationBuilder ConfigureSnarBankingMongoDbDevelopmentSeed(this IApplicationBuilder app, string environment)
         {
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-
             if (environment == "Development")
             {
                 var snarBankingMongoDbService = app.ApplicationServices.CreateScope().ServiceProvider
@@ -51,10 +46,7 @@ namespace SnarBanking.Storage
 
         internal static SnarBankingMongoDbService EnsureCreated(this SnarBankingMongoDbService s)
         {
-            IEnumerable<Expense> seedExpenses = Enumerable.Range(1, 5).Select(item =>
-            {
-                return new Expense($"Description {item}", new Money(Currency.GBP, 10.50M + item), "Grocery", "Lidl", DateTimeOffset.UtcNow);
-            });
+            IEnumerable<Expense> seedExpenses = Enumerable.Range(1, 5).Select(item => new Expense($"Description {item}", new Money(Currency.GBP, 10.50M + item), "Grocery", "Lidl", DateTimeOffset.UtcNow));
 
             s.ExpensesCollection.DeleteManyAsync(_ => true).GetAwaiter().GetResult();
             s.ExpensesCollection.InsertManyAsync(seedExpenses).GetAwaiter().GetResult();

@@ -11,9 +11,10 @@ builder.Configuration
     .AddEnvironmentVariables();
 
 builder.Services
-    .AddRouting()
     .ConfigureSnarBankingDbSettings(builder.Configuration.GetSection(SnarBanking.Storage.Settings.SnarBankingDbSettings.SectionName))
+    .AddRouting()
     .AddSnarBankingServices()
+    .AddThirdPartyServices()
     .AddEndpointsApiExplorer()
     .AddSwaggerGen();
 
@@ -24,10 +25,9 @@ app
     .UseEndpoints(
         endpoints => endpoints.UseSnarBankingEndpoints()
      )
-    .ConfigureSnarBankingServices()
+    .ConfigureSnarBankingServices(environmentName)
     .UseHttpsRedirection()
     .UseSwagger()
     .UseSwaggerUI();
-
 
 app.Run();

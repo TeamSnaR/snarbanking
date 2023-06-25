@@ -14,13 +14,12 @@ namespace SnarBanking;
 
 public static class Configuration
 {
-    public static IServiceCollection ConfigureSnarBankingDbSettings(this IServiceCollection services, IConfigurationSection configurationSection) =>
+    public static IServiceCollection ConfigureSnarBankingDbSettings(this IServiceCollection services, IConfigurationSection dbSettingsConfigurationSection) =>
         services
-            .Configure<SnarBankingDbSettings>(configurationSection);
+            .Configure<SnarBankingDbSettings>(dbSettingsConfigurationSection);
 
     public static IServiceCollection AddSnarBankingServices(this IServiceCollection services) =>
         services
-            .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()))
             .AddSnarBankingDbSettings()
             .AddSnarBankingMongoDbService()
             .AddExpensesServices();
@@ -29,7 +28,11 @@ public static class Configuration
         endpoints
             .UseExpensesEndpoints();
 
-    public static IApplicationBuilder ConfigureSnarBankingServices(this IApplicationBuilder app) =>
+    public static IApplicationBuilder ConfigureSnarBankingServices(this IApplicationBuilder app, string environmentName) =>
         app
-            .ConfigureSnarBankingMongoDbSeed();
+            .ConfigureSnarBankingMongoDbDevelopmentSeed(environmentName);
+
+    public static IServiceCollection AddThirdPartyServices(this IServiceCollection services) =>
+        services
+            .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 }

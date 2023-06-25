@@ -11,13 +11,15 @@ namespace SnarBanking.Storage
     {
         public record SnarBankingDbSettings
         {
-            public static string SectionName = "SnarBankingDatabase";
+            public const string SectionName = "SnarBankingDatabase";
             public string ConnectionString { get; set; } = default!;
             public string DatabaseName { get; set; } = default!;
             public string DefaultCollectionName { get; set; } = default!;
         }
 
-        public static IServiceCollection AddSnarBankingDbSettings(this IServiceCollection services) => services.AddSingleton<SnarBankingDbSettings>(sp => sp.GetRequiredService<IOptions<SnarBankingDbSettings>>().Value);
+        public static IServiceCollection AddSnarBankingDbSettings(this IServiceCollection services) =>
+            services
+                .AddSingleton(sp => sp.GetRequiredService<IOptions<SnarBankingDbSettings>>().Value);
     }
 }
 
