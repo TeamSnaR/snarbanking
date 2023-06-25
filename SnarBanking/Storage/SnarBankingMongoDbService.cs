@@ -16,45 +16,24 @@ namespace SnarBanking.Storage
     {
         public class SnarBankingMongoDbService
         {
-            private readonly IMongoCollection<Expense> _expensesCollection;
-            private readonly FilterDefinition<Expense> _matchAll;
-
-            public SnarBankingMongoDbService(SnarBankingDbSettings snarBankingDbSettings)
+            public SnarBankingMongoDbService(IMongoDatabase mongoDatabase, SnarBankingDbSettings snarBankingDbSettings)
             {
-                var settings = MongoClientSettings.FromConnectionString(snarBankingDbSettings.ConnectionString);
-                var client = new MongoClient(settings);
-                var database = client.GetDatabase(snarBankingDbSettings.DatabaseName);
-
-                _expensesCollection = database.GetCollection<Expense>(snarBankingDbSettings.DefaultCollectionName);
-                _matchAll = FilterDefinition<Expense>.Empty;
-                ExpensesCollection = database.GetCollection<Expense>(snarBankingDbSettings.DefaultCollectionName);
+                ExpensesCollection = mongoDatabase.GetCollection<Expense>(snarBankingDbSettings.DefaultCollectionName);
             }
 
             public IMongoCollection<Expense> ExpensesCollection { get; init; }
-
-            public Task<List<Expense>> GetExpensesAsync(FilterDefinitionSpecification<Expense> specification) => _expensesCollection.Find(specification.IsSatisfiedBy()).ToListAsync();
-
-            public Task<IReadOnlyList<TNewProjection>> GetExpensesAsync<TNewProjection>(FilterDefinitionSpecification<Expense> specification,
-            IProjector<Expense, TNewProjection> projector
-            )
-            {
-
-                return _expensesCollection
-                    .Find(specification.IsSatisfiedBy())
-                    .Project(projector.ProjectAs())
-                    .ToListAsync().ContinueWith<IReadOnlyList<TNewProjection>>(list => list.Result);
-            }
-
-            public Task<Expense> GetOneExpenseAsync(FilterDefinitionSpecification<Expense> specification) =>
-                _expensesCollection.Find(specification.IsSatisfiedBy()).FirstOrDefaultAsync();
-
-            public Task CreateOneExpenseAsync(Expense expense) => _expensesCollection.InsertOneAsync(expense);
-            public Task CreateManyExpensesAsync(IEnumerable<Expense> expenses) => _expensesCollection.InsertManyAsync(expenses);
-            public Task DeleteManyExpensesAsync(FilterDefinition<Expense>? match) => _expensesCollection.DeleteManyAsync(match ?? _matchAll);
         }
 
         public static IServiceCollection AddSnarBankingMongoDbService(this IServiceCollection services) =>
-            services.AddSingleton<SnarBankingMongoDbService>();
+            services
+                .AddSingleton(sp =>
+                {
+                    var settings = sp.GetRequiredService<SnarBankingDbSettings>();
+                    var client = new MongoClient(MongoClientSettings.FromConnectionString(settings.ConnectionString));
+
+                    return client.GetDatabase(settings.DatabaseName);
+                })
+                .AddSingleton<SnarBankingMongoDbService>();
 
         public static IApplicationBuilder ConfigureSnarBankingMongoDbSeed(this IApplicationBuilder app)
         {
@@ -77,8 +56,8 @@ namespace SnarBanking.Storage
                 return new Expense($"Description {item}", new Money(Currency.GBP, 10.50M + item), "Grocery", "Lidl", DateTimeOffset.UtcNow);
             });
 
-            s.DeleteManyExpensesAsync(null).GetAwaiter().GetResult();
-            s.CreateManyExpensesAsync(seedExpenses).GetAwaiter().GetResult();
+            s.ExpensesCollection.DeleteManyAsync(_ => true).GetAwaiter().GetResult();
+            s.ExpensesCollection.InsertManyAsync(seedExpenses).GetAwaiter().GetResult();
 
             return s;
         }
