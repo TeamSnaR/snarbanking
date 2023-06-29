@@ -52,10 +52,6 @@
               "target": "Package",
               "version": "[17.6.3, )"
             },
-            "Ogooreck": {
-              "target": "Package",
-              "version": "[0.6.0, )"
-            },
             "Shouldly": {
               "target": "Package",
               "version": "[4.2.1, )"

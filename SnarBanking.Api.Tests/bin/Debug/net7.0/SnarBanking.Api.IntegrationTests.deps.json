@@ -37,7 +37,6 @@
         "dependencies": {
           "Microsoft.AspNetCore.Mvc.Testing": "7.0.8",
           "Microsoft.NET.Test.Sdk": "17.6.3",
-          "Ogooreck": "0.6.0",
           "Shouldly": "4.2.1",
           "SnarBanking.Api": "1.0.0",
           "coverlet.collector": "6.0.0",
@@ -411,20 +410,6 @@
         },
         "compile": {
           "lib/net7.0/EmptyFiles.dll": {}
-        }
-      },
-      "FluentAssertions/6.8.0": {
-        "dependencies": {
-          "System.Configuration.ConfigurationManager": "4.4.0"
-        },
-        "runtime": {
-          "lib/net6.0/FluentAssertions.dll": {
-            "assemblyVersion": "6.8.0.0",
-            "fileVersion": "6.8.0.0"
-          }
-        },
-        "compile": {
-          "lib/net6.0/FluentAssertions.dll": {}
         }
       },
       "MediatR/12.0.1": {
@@ -1166,22 +1151,6 @@
           "lib/netstandard2.0/NuGet.Frameworks.dll": {}
         }
       },
-      "Ogooreck/0.6.0": {
-        "dependencies": {
-          "FluentAssertions": "6.8.0",
-          "Microsoft.AspNetCore.Mvc.Testing": "7.0.8",
-          "Newtonsoft.Json": "13.0.1"
-        },
-        "runtime": {
-          "lib/net7.0/Ogooreck.dll": {
-            "assemblyVersion": "0.6.0.0",
-            "fileVersion": "0.6.0.0"
-          }
-        },
-        "compile": {
-          "lib/net7.0/Ogooreck.dll": {}
-        }
-      },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
@@ -1350,20 +1319,6 @@
           "System.Runtime.Extensions": "4.3.0",
           "System.Threading": "4.3.0",
           "System.Threading.Tasks": "4.3.0"
-        }
-      },
-      "System.Configuration.ConfigurationManager/4.4.0": {
-        "dependencies": {
-          "System.Security.Cryptography.ProtectedData": "4.4.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/System.Configuration.ConfigurationManager.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "4.6.25519.3"
-          }
-        },
-        "compile": {
-          "ref/netstandard2.0/System.Configuration.ConfigurationManager.dll": {}
         }
       },
       "System.Console/4.3.0": {
@@ -1803,22 +1758,6 @@
           "System.Runtime": "4.3.0",
           "System.Threading": "4.3.0",
           "System.Threading.Tasks": "4.3.0"
-        }
-      },
-      "System.Security.Cryptography.ProtectedData/4.4.0": {
-        "runtime": {
-          "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll": {
-            "assemblyVersion": "4.0.2.0",
-            "fileVersion": "4.6.25519.3"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll": {
-            "rid": "win",
-            "assetType": "runtime",
-            "assemblyVersion": "4.0.2.0",
-            "fileVersion": "4.6.25519.3"
-          }
         }
       },
       "System.Security.Cryptography.X509Certificates/4.3.0": {
@@ -3871,13 +3810,6 @@
       "path": "emptyfiles/4.4.0",
       "hashPath": "emptyfiles.4.4.0.nupkg.sha512"
     },
-    "FluentAssertions/6.8.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-NfSlAG97wMxS48Ov+wQEhJITdn4bKrgtKrG4sCPrFBVKozpC57lQ2vzsPdxUOsPbfEgEQTMtvCDECxIlDBfgNA==",
-      "path": "fluentassertions/6.8.0",
-      "hashPath": "fluentassertions.6.8.0.nupkg.sha512"
-    },
     "MediatR/12.0.1": {
       "type": "package",
       "serviceable": true,
@@ -4214,13 +4146,6 @@
       "path": "nuget.frameworks/6.5.0",
       "hashPath": "nuget.frameworks.6.5.0.nupkg.sha512"
     },
-    "Ogooreck/0.6.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-hi7H0nya1DjfQxxzgHx9wCC+ZEODmU5Jidhr5Y+JMIdv7mY5CekadtxPGgflcZLCVg9NbxtYM30cxfvgWPqqWQ==",
-      "path": "ogooreck/0.6.0",
-      "hashPath": "ogooreck.0.6.0.nupkg.sha512"
-    },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",
       "serviceable": true,
@@ -4416,13 +4341,6 @@
       "sha512": "sha512-ztl69Xp0Y/UXCL+3v3tEU+lIy+bvjKNUmopn1wep/a291pVPK7dxBd6T7WnlQqRog+d1a/hSsgRsmFnIBKTPLQ==",
       "path": "system.collections.concurrent/4.3.0",
       "hashPath": "system.collections.concurrent.4.3.0.nupkg.sha512"
-    },
-    "System.Configuration.ConfigurationManager/4.4.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-gWwQv/Ug1qWJmHCmN17nAbxJYmQBM/E94QxKLksvUiiKB1Ld3Sc/eK1lgmbSjDFxkQhVuayI/cGFZhpBSodLrg==",
-      "path": "system.configuration.configurationmanager/4.4.0",
-      "hashPath": "system.configuration.configurationmanager.4.4.0.nupkg.sha512"
     },
     "System.Console/4.3.0": {
       "type": "package",
@@ -4738,13 +4656,6 @@
       "sha512": "sha512-7bDIyVFNL/xKeFHjhobUAQqSpJq9YTOpbEs6mR233Et01STBMXNAc/V+BM6dwYGc95gVh/Zf+iVXWzj3mE8DWg==",
       "path": "system.security.cryptography.primitives/4.3.0",
       "hashPath": "system.security.cryptography.primitives.4.3.0.nupkg.sha512"
-    },
-    "System.Security.Cryptography.ProtectedData/4.4.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-cJV7ScGW7EhatRsjehfvvYVBvtiSMKgN8bOVI0bQhnF5bU7vnHVIsH49Kva7i7GWaWYvmEzkYVk1TC+gZYBEog==",
-      "path": "system.security.cryptography.protecteddata/4.4.0",
-      "hashPath": "system.security.cryptography.protecteddata.4.4.0.nupkg.sha512"
     },
     "System.Security.Cryptography.X509Certificates/4.3.0": {
       "type": "package",

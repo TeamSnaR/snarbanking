@@ -1,12 +1,18 @@
-﻿using System;
+﻿
+using System.Reflection;
 
 using MediatR;
+
+using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
+
+using SnarBanking.Expenses;
 
 using static SnarBanking.Storage.Service;
 
 namespace SnarBanking.Api.IntegrationTests
 {
-    public class WebApplicationFixture : IDisposable
+    public class WebApplicationFixture : IAsyncLifetime, IDisposable
     {
         public readonly SnarBankingTestWebApplicationFactory _factory;
         public readonly IServiceProvider _serviceProvider;
@@ -17,36 +23,43 @@ namespace SnarBanking.Api.IntegrationTests
             _serviceProvider = _factory.Services;
         }
 
-        //public async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
-        //{
-        //    using var scope = _serviceProvider.CreateScope();
+        public async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
+        {
+            using var scope = _serviceProvider.CreateScope();
 
-        //    var mediator = scope.ServiceProvider.GetRequiredService<ISender>();
+            var mediator = scope.ServiceProvider.GetRequiredService<ISender>();
 
-        //    return await mediator.Send(request);
-        //}
+            return await mediator.Send(request);
+        }
 
-        //public async Task SendASync(IBaseRequest request)
-        //{
-        //    using var scope = _serviceProvider.CreateScope();
+        public async Task SendASync(IRequest request)
+        {
+            using var scope = _serviceProvider.CreateScope();
 
-        //    var mediator = scope.ServiceProvider.GetRequiredService<ISender>();
+            var mediator = scope.ServiceProvider.GetRequiredService<ISender>();
 
-        //    await mediator.Send(request);
-        //}
+            await mediator.Send(request);
+        }
 
-        //public Task InitializeDb()
-        //{
-        //    using var scope = _serviceProvider.CreateScope();
+        public async Task InitializeAsync()
+        {
+            var pathToSeedTestData = Path.Combine(Path.GetDirectoryName(Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().Location))!, "Data", "TestData.json");
 
-        //    var db = scope.ServiceProvider.GetRequiredService<SnarBankingMongoDbService>();
-        //    Utilities.Utilities.ReInitializeDbForTests(db);
+            using var stream = new StreamReader(pathToSeedTestData);
+            var seedTestData = stream.ReadToEnd();
+            var seedTestDataAsBson = BsonSerializer.Deserialize<IEnumerable<Expense>>(seedTestData);
+            using var scope = _factory.Services.CreateScope();
+            var snarBankingMongoDbService = scope.ServiceProvider.GetRequiredService<SnarBankingMongoDbService>();
 
-        //    return Task.CompletedTask;
-        //}
+            await snarBankingMongoDbService.ExpensesCollection.DeleteManyAsync(_ => true);
+            await snarBankingMongoDbService.ExpensesCollection.InsertManyAsync(seedTestDataAsBson);
+        }
+
+        public Task DisposeAsync() => Task.CompletedTask;
 
         public void Dispose()
         {
+            DisposeAsync().GetAwaiter().GetResult();
         }
     }
 }
