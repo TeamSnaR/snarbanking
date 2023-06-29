@@ -365,7 +365,6 @@
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/DiffEngine.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/DnsClient.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/EmptyFiles.dll
-/Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/FluentAssertions.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/MediatR.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/MediatR.Contracts.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/Microsoft.AspNetCore.Mvc.Testing.dll
@@ -391,7 +390,6 @@
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/MongoDB.Libmongocrypt.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/Newtonsoft.Json.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/NuGet.Frameworks.dll
-/Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/Ogooreck.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/SharpCompress.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/Shouldly.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/Snappier.dll
@@ -399,9 +397,7 @@
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/Swashbuckle.AspNetCore.SwaggerUI.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/System.CodeDom.dll
-/Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/System.Configuration.ConfigurationManager.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/System.Management.dll
-/Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/System.Security.Cryptography.ProtectedData.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/xunit.abstractions.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/xunit.assert.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/xunit.core.dll
@@ -476,7 +472,6 @@
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/runtimes/osx/native/libmongocrypt.dylib
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/runtimes/win/native/mongocrypt.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/runtimes/win/lib/net6.0/System.Management.dll
-/Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/SnarBanking.Api.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/SnarBanking.dll
 /Users/lhargil/code/SnarBanking/SnarBanking.Api.Tests/bin/Debug/net7.0/SnarBanking.Api.pdb

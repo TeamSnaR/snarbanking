@@ -50,12 +50,18 @@ namespace SnarBanking.Api.IntegrationTests
             var seedTestDataAsBson = BsonSerializer.Deserialize<IEnumerable<Expense>>(seedTestData);
             using var scope = _factory.Services.CreateScope();
             var snarBankingMongoDbService = scope.ServiceProvider.GetRequiredService<SnarBankingMongoDbService>();
-
             await snarBankingMongoDbService.ExpensesCollection.DeleteManyAsync(_ => true);
             await snarBankingMongoDbService.ExpensesCollection.InsertManyAsync(seedTestDataAsBson);
         }
 
-        public Task DisposeAsync() => Task.CompletedTask;
+        public async Task DisposeAsync()
+        {
+            //using var scope = _factory.Services.CreateScope();
+            //var snarBankingMongoDbService = scope.ServiceProvider.GetRequiredService<SnarBankingMongoDbService>();
+
+            //return snarBankingMongoDbService.ExpensesCollection.DeleteManyAsync(_ => true);
+            await Task.CompletedTask;
+        }
 
         public void Dispose()
         {

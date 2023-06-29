@@ -30,12 +30,14 @@
 		<None Remove="Expenses\GettingExpenses\" />
 		<None Remove="Utilities\" />
 		<None Remove="Data\" />
+		<None Remove="Expenses\GettingExpenseDetails\" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Expenses\" />
 		<Folder Include="Expenses\GettingExpenses\" />
 		<Folder Include="Utilities\" />
 		<Folder Include="Data\" />
+		<Folder Include="Expenses\GettingExpenseDetails\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Content Remove="appsettings.Development.json" />

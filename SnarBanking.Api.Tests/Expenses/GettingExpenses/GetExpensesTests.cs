@@ -4,24 +4,27 @@ using SnarBanking.Expenses.GettingExpenses;
 
 namespace SnarBanking.Api.Tests.Expenses.GettingExpenses
 {
-    public class GetExpensesShould : IClassFixture<WebApplicationFixture>
+    public static class GettingExpensesTests
     {
-        private readonly WebApplicationFixture _waf;
-
-        public GetExpensesShould(WebApplicationFixture waf)
+        public class GetExpensesShould : IClassFixture<WebApplicationFixture>
         {
-            _waf = waf;
-        }
+            private readonly WebApplicationFixture _waf;
 
-        [Fact]
-        public async Task ReturnListOfExpenses()
-        {
-            var request = new GetExpenses.Query();
+            public GetExpensesShould(WebApplicationFixture waf)
+            {
+                _waf = waf;
+            }
 
-            var result = await _waf.SendAsync(request);
+            [Fact]
+            public async Task ReturnListOfExpenses()
+            {
+                var request = new GetExpenses.Query();
 
-            result.Count.ShouldNotBe(0);
-            result.Count.ShouldBe(10);
+                var result = await _waf.SendAsync(request);
+
+                result.Count.ShouldNotBe(0);
+                result.Count.ShouldBe(10);
+            }
         }
     }
 }
