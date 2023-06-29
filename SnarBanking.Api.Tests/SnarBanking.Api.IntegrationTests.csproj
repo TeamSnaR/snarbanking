@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
+		<PackageReference Include="xunit" Version="2.4.2" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.collector" Version="6.0.0">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Shouldly" Version="4.2.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.8" />
+		<PackageReference Include="Ogooreck" Version="0.6.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SnarBanking.Api\SnarBanking.Api.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="Expenses\" />
+		<None Remove="appsettings.Development.json" />
+		<None Remove="Expenses\GettingExpenses\" />
+		<None Remove="Utilities\" />
+		<None Remove="Data\" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Expenses\" />
+		<Folder Include="Expenses\GettingExpenses\" />
+		<Folder Include="Utilities\" />
+		<Folder Include="Data\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Remove="appsettings.Development.json" />
+	  <Content Remove="Data\TestData.json" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Update="Properties\launchSettings.json">
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="Data\TestData.json" Condition="'$(ExcludeConfigFilesFromBuildOutput)'!='true'">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </None>
+	</ItemGroup>
+</Project>

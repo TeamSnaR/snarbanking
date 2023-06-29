@@ -1,0 +1,23 @@
+{
+  "Version": 1,
+  "Hash": "RBz0FOIKhcKX9JNTky7MPtJ/F3ajdeIb2sOCAR+X1Ig=",
+  "Source": "SnarBanking.Api.IntegrationTests",
+  "BasePath": "_content/SnarBanking.Api.IntegrationTests",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "/Users/lhargil/code/SnarBanking/SnarBanking.Api/SnarBanking.Api.csproj",
+      "Version": 2,
+      "Source": "SnarBanking.Api",
+      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

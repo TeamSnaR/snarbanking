@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnarBanking.Api", "SnarBank
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnarBanking", "SnarBanking\SnarBanking.csproj", "{89EDAAD5-06A7-4033-B63D-933B62FBF615}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnarBanking.Api.IntegrationTests", "SnarBanking.Api.Tests\SnarBanking.Api.IntegrationTests.csproj", "{9F69892C-0337-41EB-927F-B46197B0AA43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{89EDAAD5-06A7-4033-B63D-933B62FBF615}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89EDAAD5-06A7-4033-B63D-933B62FBF615}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89EDAAD5-06A7-4033-B63D-933B62FBF615}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F69892C-0337-41EB-927F-B46197B0AA43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F69892C-0337-41EB-927F-B46197B0AA43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F69892C-0337-41EB-927F-B46197B0AA43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F69892C-0337-41EB-927F-B46197B0AA43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
