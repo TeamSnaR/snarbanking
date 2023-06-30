@@ -23,7 +23,7 @@ namespace SnarBanking.Expenses.GettingExpenses
             }
             public async Task<IReadOnlyList<Expense>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _expenseService.GetAsync(new MatchAllSpecification());
+                return await _expenseService.GetManyAsync(new MatchAllSpecification());
             }
         }
     }
