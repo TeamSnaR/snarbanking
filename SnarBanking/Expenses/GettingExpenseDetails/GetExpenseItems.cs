@@ -21,7 +21,7 @@ namespace SnarBanking.Expenses.GettingExpenseDetails
                     .Projection
                         .Expression(expense => new ExpenseItemProjection(expense.Id, expense.Description, expense.Items));
         }
-        internal class ById : IRequest<IReadOnlyList<ExpenseItemProjection>>
+        internal class ById : IRequest<ExpenseItemProjection>
         {
             public ById(string payload)
             {
@@ -31,7 +31,7 @@ namespace SnarBanking.Expenses.GettingExpenseDetails
             public string Payload { get; }
         }
 
-        internal class ByIdHandler : IRequestHandler<ById, IReadOnlyList<ExpenseItemProjection>>
+        internal class ByIdHandler : IRequestHandler<ById, ExpenseItemProjection>
         {
             private readonly IGenericService<Expense> _expenseService;
 
@@ -40,9 +40,9 @@ namespace SnarBanking.Expenses.GettingExpenseDetails
                 _expenseService = expenseService;
             }
 
-            public Task<IReadOnlyList<ExpenseItemProjection>> Handle(ById request, CancellationToken cancellationToken)
+            public async Task<ExpenseItemProjection> Handle(ById request, CancellationToken cancellationToken)
             {
-                return _expenseService.GetAsync(new MatchByIdSpecification(request.Payload), new GetExpenseItemsProjector());
+                return await _expenseService.GetOneAsync(new MatchByIdSpecification(request.Payload), new GetExpenseItemsProjector()) ?? throw new NullReferenceException("Expense not found");
             }
         }
     }

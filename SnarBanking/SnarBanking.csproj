@@ -9,21 +9,24 @@
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Remove="Expenses\" />
-	  <None Remove="Expenses\GettingExpenses\" />
-	  <None Remove="Storage\" />
-	  <None Remove="Expenses\GettingExpenseDetails\" />
-	  <None Remove="Core\" />
+		<None Remove="Expenses\" />
+		<None Remove="Expenses\GettingExpenses\" />
+		<None Remove="Storage\" />
+		<None Remove="Expenses\GettingExpenseDetails\" />
+		<None Remove="Core\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Expenses\" />
-	  <Folder Include="Expenses\GettingExpenses\" />
-	  <Folder Include="Storage\" />
-	  <Folder Include="Expenses\GettingExpenseDetails\" />
-	  <Folder Include="Core\" />
+		<Folder Include="Expenses\" />
+		<Folder Include="Expenses\GettingExpenses\" />
+		<Folder Include="Storage\" />
+		<Folder Include="Expenses\GettingExpenseDetails\" />
+		<Folder Include="Core\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="MediatR" Version="12.0.1" />
-	  <PackageReference Include="MongoDB.Driver" Version="2.20.0" />
+		<PackageReference Include="MediatR" Version="12.0.1" />
+		<PackageReference Include="MongoDB.Driver" Version="2.20.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="SnarBanking.Api.IntegrationTests" />
 	</ItemGroup>
 </Project>

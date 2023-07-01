@@ -43,7 +43,7 @@ namespace SnarBanking.Expenses.GettingExpenseDetails
                         return Results.Ok(expenseItems);
                     }
                 )
-                .Produces<IReadOnlyList<ExpenseItemProjection>>(StatusCodes.Status200OK)
+                .Produces<ExpenseItemProjection>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status400BadRequest)
                 .Produces(StatusCodes.Status404NotFound);
 

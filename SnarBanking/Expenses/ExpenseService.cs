@@ -7,13 +7,18 @@ namespace SnarBanking.Expenses;
 
 public interface IGenericService<T> where T : class
 {
-    Task<IReadOnlyList<T>> GetAsync(
+    Task<IReadOnlyList<T>> GetManyAsync(
         IFilterDefinitionSpecification<T> specification
     );
-    Task<IReadOnlyList<TNewProjection>> GetAsync<TNewProjection>(
+    Task<IReadOnlyList<TNewProjection>> GetManyAsync<TNewProjection>(
         IFilterDefinitionSpecification<T> specification,
         IProjector<T, TNewProjection> projector
     );
+    Task<TNewProjection> GetOneAsync<TNewProjection>(
+        IFilterDefinitionSpecification<T> specification,
+        IProjector<T, TNewProjection> projector
+    );
+
     Task<T> GetOneAsync(
         IFilterDefinitionSpecification<T> specification
     );
@@ -27,14 +32,14 @@ public class ExpenseService : IGenericService<Expense>
         _snarBankingMongoDbService = snarBankingMongoDbService;
     }
 
-    public Task<IReadOnlyList<TNewProjection>> GetAsync<TNewProjection>(IFilterDefinitionSpecification<Expense> specification, IProjector<Expense, TNewProjection> projector) =>
+    public Task<TNewProjection> GetOneAsync<TNewProjection>(IFilterDefinitionSpecification<Expense> specification, IProjector<Expense, TNewProjection> projector) =>
         _snarBankingMongoDbService.ExpensesCollection
             .Find(specification.IsSatisfiedBy())
             .Project(projector.ProjectAs())
-            .ToListAsync()
-                .ContinueWith<IReadOnlyList<TNewProjection>>(list => list.Result);
+            .FirstOrDefaultAsync()
+            .ContinueWith(list => list.Result);
 
-    public Task<IReadOnlyList<Expense>> GetAsync(IFilterDefinitionSpecification<Expense> specification) =>
+    public Task<IReadOnlyList<Expense>> GetManyAsync(IFilterDefinitionSpecification<Expense> specification) =>
         _snarBankingMongoDbService.ExpensesCollection
             .FindAsync(specification.IsSatisfiedBy())
                 .ContinueWith<IReadOnlyList<Expense>>(list => list.Result.ToList());
@@ -42,4 +47,11 @@ public class ExpenseService : IGenericService<Expense>
     public Task<Expense> GetOneAsync(IFilterDefinitionSpecification<Expense> specification) => _snarBankingMongoDbService.ExpensesCollection
             .FindAsync(specification.IsSatisfiedBy())
                 .ContinueWith(list => list.Result.FirstOrDefault());
+
+    public Task<IReadOnlyList<TNewProjection>> GetManyAsync<TNewProjection>(IFilterDefinitionSpecification<Expense> specification, IProjector<Expense, TNewProjection> projector) =>
+        _snarBankingMongoDbService.ExpensesCollection
+            .Find(specification.IsSatisfiedBy(), new FindOptions())
+            .Project(projector.ProjectAs())
+            .ToListAsync()
+            .ContinueWith<IReadOnlyList<TNewProjection>>(list => list.Result);
 }

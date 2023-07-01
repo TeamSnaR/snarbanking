@@ -25,9 +25,9 @@ namespace SnarBanking.Expenses.GettingExpenseDetails
             {
                 _expenseService = expenseService;
             }
-            public Task<Expense> Handle(ById request, CancellationToken cancellationToken)
+            public async Task<Expense> Handle(ById request, CancellationToken cancellationToken)
             {
-                return _expenseService.GetOneAsync(new MatchByIdSpecification(request.Payload)) ?? throw new NullReferenceException("Expense not found");
+                return await _expenseService.GetOneAsync(new MatchByIdSpecification(request.Payload)) ?? throw new NullReferenceException("Expense not found");
             }
         }
     }
