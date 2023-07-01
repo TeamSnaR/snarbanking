@@ -10,7 +10,8 @@ namespace SnarBanking.Api.IntegrationTests.Expenses.GettingExpenseDetails
 {
     public static class GettingExpenseDetailsTests
     {
-        public class GetExpenseDetailsShould : IClassFixture<WebApplicationFixture>
+        [Collection("Web application collection")]
+        public class GetExpenseDetailsShould
         {
             private readonly WebApplicationFixture _waf;
 
@@ -44,7 +45,8 @@ namespace SnarBanking.Api.IntegrationTests.Expenses.GettingExpenseDetails
             }
         }
 
-        public class GetExpenseItemsShould : IClassFixture<WebApplicationFixture>
+        [Collection("Web application collection")]
+        public class GetExpenseItemsShould
         {
             private readonly WebApplicationFixture _waf;
 

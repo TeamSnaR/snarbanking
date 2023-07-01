@@ -6,7 +6,8 @@ namespace SnarBanking.Api.Tests.Expenses.GettingExpenses
 {
     public static class GettingExpensesTests
     {
-        public class GetExpensesShould : IClassFixture<WebApplicationFixture>
+        [Collection("Web application collection")]
+        public class GetExpensesShould
         {
             private readonly WebApplicationFixture _waf;
 

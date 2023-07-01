@@ -68,5 +68,11 @@ namespace SnarBanking.Api.IntegrationTests
             DisposeAsync().GetAwaiter().GetResult();
         }
     }
+
+    [CollectionDefinition("Web application collection")]
+    public class WebApplicationCollection : ICollectionFixture<WebApplicationFixture>
+    {
+
+    }
 }
 
