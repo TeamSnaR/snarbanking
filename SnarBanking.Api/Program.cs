@@ -15,8 +15,8 @@ builder.Configuration
     .AddEnvironmentVariables();
 
 builder.Services
+    .ConfigureSnarBankingDbSettings()
     .AddProblemDetails()
-    .ConfigureSnarBankingDbSettings(builder.Configuration.GetSection(SnarBanking.Storage.Settings.SnarBankingDbSettings.SectionName))
     .AddRouting()
     .AddSnarBankingServices()
     .AddThirdPartyServices()

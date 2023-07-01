@@ -14,13 +14,21 @@ namespace SnarBanking;
 
 public static class Configuration
 {
-    public static IServiceCollection ConfigureSnarBankingDbSettings(this IServiceCollection services, IConfigurationSection dbSettingsConfigurationSection) =>
+    public static IServiceCollection ConfigureSnarBankingDbSettings(this IServiceCollection services) =>
         services
-            .Configure<SnarBankingDbSettings>(dbSettingsConfigurationSection);
+            .AddSingleton(options =>
+            {
+                SnarBankingDbSettings snarBankingDbSettings = new();
+                options
+                    .GetRequiredService<IConfiguration>()
+                    .GetSection(SnarBankingDbSettings.SectionName)
+                    .Bind(snarBankingDbSettings);
+
+                return snarBankingDbSettings;
+            });
 
     public static IServiceCollection AddSnarBankingServices(this IServiceCollection services) =>
         services
-            .AddSnarBankingDbSettings()
             .AddSnarBankingMongoDbService()
             .AddExpensesServices();
 

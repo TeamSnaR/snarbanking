@@ -45,35 +45,6 @@ public class SnarBankingTestWebApplicationFactory : WebApplicationFactory<Progra
 
         var host = base.CreateHost(builder);
 
-        //using var scope = host.Services.CreateScope();
-        //var database = scope.ServiceProvider.GetRequiredService<WarehouseDBContext>().Database;
-        //database.ExecuteSqlRaw("TRUNCATE TABLE \"Product\"");
-
         return host;
     }
-    //protected override void ConfigureWebHost(IWebHostBuilder builder)
-    //{
-    //    builder.ConfigureServices(services =>
-    //    {
-    //        services
-    //            .Remove<IMongoDatabase>()
-    //            .Remove<SnarBankingMongoDbService>()
-    //            .Remove<SnarBankingDbSettings>();
-
-    //        services
-    //            .AddTransient(sp =>
-    //            {
-    //                SnarBankingDbSettings snarBankingDbSettings = new();
-    //                sp
-    //                    .GetRequiredService<IConfiguration>()
-    //                    .GetRequiredSection(SnarBankingDbSettings.SectionName)
-    //                    .Bind(snarBankingDbSettings);
-    //                return snarBankingDbSettings;
-    //            });
-
-    //        services
-    //            .AddSnarBankingMongoDbService();
-    //    });
-    //    builder.UseEnvironment("Development");
-    //}
 }
