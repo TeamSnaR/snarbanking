@@ -1,5 +1,9 @@
 
 using SnarBanking;
+using SnarBanking.Api;
+using SnarBanking.Api.ExceptionHandling;
+
+using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +15,7 @@ builder.Configuration
     .AddEnvironmentVariables();
 
 builder.Services
+    .AddProblemDetails()
     .ConfigureSnarBankingDbSettings(builder.Configuration.GetSection(SnarBanking.Storage.Settings.SnarBankingDbSettings.SectionName))
     .AddRouting()
     .AddSnarBankingServices()
@@ -21,6 +26,7 @@ builder.Services
 var app = builder.Build();
 
 app
+    .UseSnarBankingGlobalExceptionHandler()
     .UseRouting()
     .UseEndpoints(
         endpoints => endpoints.UseSnarBankingEndpoints()
