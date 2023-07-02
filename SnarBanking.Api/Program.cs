@@ -8,19 +8,10 @@ using SnarBanking.Api.ExceptionHandling;
 
 var environmentName = Environment.GetEnvironmentVariable("EnvironmentName") ?? "Development";
 
-var configuration = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json")
-    .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: false)
-    .AddEnvironmentVariables()
-    .Build();
-var seqUrl = configuration.GetValue<string>("Seq:Url")!;
-var apiKey = configuration.GetValue<string>("Seq:ApiKey")!;
-
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
     .Enrich.FromLogContext()
     .WriteTo.Console(new RenderedCompactJsonFormatter())
-    .WriteTo.Seq(seqUrl, apiKey: apiKey)
     .CreateBootstrapLogger();
 
 try
@@ -29,13 +20,19 @@ try
 
     var builder = WebApplication.CreateBuilder(args);
 
+    builder.Configuration
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json")
+        .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: false)
+        .AddEnvironmentVariables();
+
     builder.Host.UseSerilog((context, services, configuration) =>
         configuration
             .ReadFrom.Configuration(context.Configuration)
             .ReadFrom.Services(services)
             .Enrich.FromLogContext()
-            .WriteTo.Seq(seqUrl, apiKey: apiKey)
     );
+
     builder.Services
         .ConfigureSnarBankingDbSettings()
         .AddProblemDetails()
