@@ -19,7 +19,8 @@ public class SnarBankingTestWebApplicationFactory : WebApplicationFactory<Progra
                 cfg.Sources.Clear();
                 cfg
                     .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.Test.json");
+                    .AddJsonFile("appsettings.Test.json")
+                    .AddEnvironmentVariables();
             })
             .ConfigureLogging(cfg =>
             {
@@ -46,7 +47,7 @@ public class SnarBankingTestWebApplicationFactory : WebApplicationFactory<Progra
                 services
                     .AddSnarBankingMongoDbService();
             });
-        builder.UseEnvironment("Development");
+        builder.UseEnvironment("Test");
 
         var host = base.CreateHost(builder);
 
