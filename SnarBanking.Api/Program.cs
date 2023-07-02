@@ -1,41 +1,70 @@
 
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Compact;
+
 using SnarBanking;
-using SnarBanking.Api;
 using SnarBanking.Api.ExceptionHandling;
-
-using static System.Net.Mime.MediaTypeNames;
-
-var builder = WebApplication.CreateBuilder(args);
 
 var environmentName = Environment.GetEnvironmentVariable("EnvironmentName") ?? "Development";
 
-builder.Configuration
-    .AddJsonFile("appsettings.json")
-    .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: false)
-    .AddEnvironmentVariables();
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .Enrich.FromLogContext()
+    .WriteTo.Console(new RenderedCompactJsonFormatter())
+    .CreateBootstrapLogger();
 
-builder.Services
-    .ConfigureSnarBankingDbSettings()
-    .AddProblemDetails()
-    .AddRouting()
-    .AddSnarBankingServices()
-    .AddThirdPartyServices()
-    .AddEndpointsApiExplorer()
-    .AddSwaggerGen();
+try
+{
+    Log.Information("Starting web application");
 
-var app = builder.Build();
+    var builder = WebApplication.CreateBuilder(args);
 
-app
-    .UseSnarBankingGlobalExceptionHandler()
-    .UseRouting()
-    .UseEndpoints(
-        endpoints => endpoints.UseSnarBankingEndpoints()
-     )
-    .ConfigureSnarBankingServices(environmentName)
-    .UseHttpsRedirection()
-    .UseSwagger()
-    .UseSwaggerUI();
+    builder.Configuration
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json")
+        .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: false)
+        .AddEnvironmentVariables();
 
-app.Run();
+    builder.Host.UseSerilog((context, services, configuration) =>
+        configuration
+            .ReadFrom.Configuration(context.Configuration)
+            .ReadFrom.Services(services)
+            .Enrich.FromLogContext()
+    );
+
+    builder.Services
+        .ConfigureSnarBankingDbSettings()
+        .AddProblemDetails()
+        .AddRouting()
+        .AddSnarBankingServices()
+        .AddThirdPartyServices()
+        .AddEndpointsApiExplorer()
+        .AddSwaggerGen();
+
+    var app = builder.Build();
+
+    app
+        .UseSerilogRequestLogging()
+        .UseSnarBankingGlobalExceptionHandler()
+        .UseRouting()
+        .UseEndpoints(
+            endpoints => endpoints.UseSnarBankingEndpoints()
+         )
+        .ConfigureSnarBankingServices(environmentName)
+        .UseHttpsRedirection()
+        .UseSwagger()
+        .UseSwaggerUI();
+
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
 
 public partial class Program { }
