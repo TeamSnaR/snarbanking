@@ -13,34 +13,39 @@ public class SnarBankingTestWebApplicationFactory : WebApplicationFactory<Progra
 {
     protected override IHost CreateHost(IHostBuilder builder)
     {
-        builder.ConfigureAppConfiguration(cfg =>
-        {
-            cfg.Sources.Clear();
-            cfg
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.Test.json");
-        });
-        builder.ConfigureServices(services =>
-        {
-            services
-                .Remove<IMongoDatabase>()
-                .Remove<SnarBankingMongoDbService>()
-                .Remove<SnarBankingDbSettings>();
+        builder
+            .ConfigureAppConfiguration(cfg =>
+            {
+                cfg.Sources.Clear();
+                cfg
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.Test.json");
+            })
+            .ConfigureLogging(cfg =>
+            {
+                cfg.ClearProviders();
+            })
+            .ConfigureServices(services =>
+            {
+                services
+                    .Remove<IMongoDatabase>()
+                    .Remove<SnarBankingMongoDbService>()
+                    .Remove<SnarBankingDbSettings>();
 
-            services
-                .AddTransient(sp =>
-                {
-                    SnarBankingDbSettings snarBankingDbSettings = new();
-                    sp
-                        .GetRequiredService<IConfiguration>()
-                        .GetRequiredSection(SnarBankingDbSettings.SectionName)
-                        .Bind(snarBankingDbSettings);
-                    return snarBankingDbSettings;
-                });
+                services
+                    .AddTransient(sp =>
+                    {
+                        SnarBankingDbSettings snarBankingDbSettings = new();
+                        sp
+                            .GetRequiredService<IConfiguration>()
+                            .GetRequiredSection(SnarBankingDbSettings.SectionName)
+                            .Bind(snarBankingDbSettings);
+                        return snarBankingDbSettings;
+                    });
 
-            services
-                .AddSnarBankingMongoDbService();
-        });
+                services
+                    .AddSnarBankingMongoDbService();
+            });
         builder.UseEnvironment("Development");
 
         var host = base.CreateHost(builder);
