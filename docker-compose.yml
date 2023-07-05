@@ -1,0 +1,28 @@
+version: "3.4"
+
+services:
+  snarbanking.api:
+    image: ${DOCKER_REGISTRY-}snarbanking:latest
+    build:
+      context: .
+      dockerfile: SnarBanking.Api/Dockerfile
+    networks:
+      - snarbanking_network
+    environment:
+      - name=value
+  snarbankingDb:
+    image: mongodb/mongodb-community-server:latest
+    networks:
+      - snarbanking_network
+    ports:
+      - "27017:27017"
+  snarbankingSeq:
+    image: datalust/seq:latest
+    ports:
+      - "5341:5341"
+    networks:
+      - snarbanking_network
+
+networks:
+  snarbanking_network:
+    driver: bridge
