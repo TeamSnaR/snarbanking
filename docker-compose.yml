@@ -5,24 +5,40 @@ services:
     image: ${DOCKER_REGISTRY-}snarbanking:latest
     build:
       context: .
-      dockerfile: SnarBanking.Api/Dockerfile
+      dockerfile: dotnet-api.Dockerfile
     networks:
       - snarbanking_network
-    environment:
-      - name=value
+    depends_on:
+      - snarbankingDb
+      - snarbankingSeq
   snarbankingDb:
     image: mongodb/mongodb-community-server:latest
-    networks:
-      - snarbanking_network
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     ports:
       - "27017:27017"
+    networks:
+      - snarbanking_network
+    volumes:
+      - snarbankingDb-data:/data/db
   snarbankingSeq:
     image: datalust/seq:latest
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+      SEQ_FIRSTRUN_ADMINPASSWORDHASH: "QHifzJh98UktXWTQDr70rjI/d1/2ODeUQVYyedeVk8Vzmla2TnV2uI0+IFdAU2TxHCTshh30fXhmdFKu1b/yj8e5VtGteFitKu1lKDu/JCeX"
     ports:
+      - "8080:80"
       - "5341:5341"
     networks:
       - snarbanking_network
-
+    volumes:
+      - snarbankingLogs:/data
+volumes:
+  snarbankingDb-data:
+  snarbankingLogs:
 networks:
   snarbanking_network:
     driver: bridge

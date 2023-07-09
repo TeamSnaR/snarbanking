@@ -1,13 +1,15 @@
-version: '3.4'
+version: "3.4"
 
 services:
   snarbanking.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      Serilog__WriteTo__0__Args__serverUrl: http://snarbankingSeq:5341
+      SnarBankingDatabase__ConnectionString: mongodb://root:example@snarbankingDb:27017/
     ports:
-      - "80"
-      - "443"
+      - "6000:80"
+      - "6001:443"
     volumes:
-      - ~/.aspnet/https:/root/.aspnet/https:ro
-      - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+      - ~/.aspnet/https:/root/.aspnet/https/
+      - ~/.microsoft/usersecrets/:/root/.microsoft/usersecrets
