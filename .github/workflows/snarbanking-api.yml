@@ -30,6 +30,7 @@ jobs:
         uses: supercharge/mongodb-github-action@1.8.0
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
+          mongodb-port: 27017
       - name: Test
         run: dotnet test SnarBanking.sln --no-build --verbosity normal
         env:
