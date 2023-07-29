@@ -24,7 +24,7 @@ jobs:
       - name: Build
         run: dotnet build SnarBanking.sln --no-restore
       - name: Test
-        run: dotnet test SnarBankign.sln --no-build --verbosity normal
+        run: dotnet test SnarBanking.sln --no-build --verbosity normal
         env:
           ASPNETCORE_ENVIRONMENT: Test
           SnarBankingDatabase__ConnectionString: ${{ secrets.SNARBANKINGDATABASE__CONNECTIONSTRING }}
