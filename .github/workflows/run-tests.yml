@@ -1,0 +1,31 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+# write job to run dotnet tests using ubuntu-latest as the runner. the dotnet commands should use the SnarBanking.sln file. the dotnet sdk version should be at least 7
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        mongodb-version: ["5.0", "6.0"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 7.0.100
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+          mongodb-port: 27017
+      - name: Restore dependencies
+        run: dotnet restore SnarBanking.sln
+      - name: Test
+        run: dotnet test SnarBanking.sln --no-restore --verbosity normal
