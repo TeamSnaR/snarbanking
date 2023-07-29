@@ -12,6 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        mongodb-version: ["5.0", "6.0"]
 
     steps:
       - uses: actions/checkout@v3
@@ -23,8 +26,12 @@ jobs:
         run: dotnet restore SnarBanking.sln
       - name: Build
         run: dotnet build SnarBanking.sln --no-restore
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
       - name: Test
         run: dotnet test SnarBanking.sln --no-build --verbosity normal
         env:
           ASPNETCORE_ENVIRONMENT: Test
-          SnarBankingDatabase__ConnectionString: ${{ secrets.SNARBANKINGDATABASE__CONNECTIONSTRING }}
+          SnarBankingDatabase__ConnectionString: mongodb://localhost:27017
