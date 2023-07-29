@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 
+using FluentValidation;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
@@ -42,5 +44,6 @@ public static class Configuration
 
     public static IServiceCollection AddThirdPartyServices(this IServiceCollection services) =>
         services
-            .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()))
+            .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 }
