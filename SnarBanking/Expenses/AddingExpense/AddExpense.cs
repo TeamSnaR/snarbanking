@@ -27,7 +27,7 @@ internal static class AddExpense
         {
             var expense = new Expense(request.ExpenseDto.Description, request.ExpenseDto.Amount, request.ExpenseDto.Category, request.ExpenseDto.Store, request.ExpenseDto.PurchaseDate);
 
-            await _validator.ValidateAndThrowAsync(request.ExpenseDto);
+            await _validator.ValidateAndThrowAsync(request.ExpenseDto, ct);
 
             var expenseId = await _genericWriteService.AddOneAsync(expense);
             return expenseId;
