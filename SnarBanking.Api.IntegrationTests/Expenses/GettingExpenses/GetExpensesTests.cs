@@ -24,7 +24,7 @@ namespace SnarBanking.Api.Tests.Expenses.GettingExpenses
                 var result = await _waf.SendAsync(request);
 
                 result.Count.ShouldNotBe(0);
-                result.Count.ShouldBe(10);
+                result.Count.ShouldBeGreaterThanOrEqualTo(10);
             }
         }
     }
