@@ -1,5 +1,7 @@
 ﻿using MongoDB.Driver;
 
+using SnarBanking.Core;
+
 using static SnarBanking.Storage.Service;
 using static SnarBanking.Storage.Specifications;
 
@@ -23,7 +25,7 @@ public interface IGenericService<T> where T : class
         IFilterDefinitionSpecification<T> specification
     );
 }
-public class ExpenseService : IGenericService<Expense>
+public class ExpenseService : IGenericService<Expense>, IGenericWriteService<Expense>
 {
     private readonly SnarBankingMongoDbService _snarBankingMongoDbService;
 
@@ -54,4 +56,14 @@ public class ExpenseService : IGenericService<Expense>
             .Project(projector.ProjectAs())
             .ToListAsync()
             .ContinueWith<IReadOnlyList<TNewProjection>>(list => list.Result);
+
+    public Task<string> AddOneAsync(Expense expense) =>
+        _snarBankingMongoDbService.ExpensesCollection
+            .InsertOneAsync(expense)
+            .ContinueWith<string>(task => expense.Id);
+
+    public Task<string> AddManyAsync(IEnumerable<Expense> entities)
+    {
+        throw new NotImplementedException();
+    }
 }
