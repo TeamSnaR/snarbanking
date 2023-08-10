@@ -16,6 +16,7 @@
 		<None Remove="Core\" />
 	</ItemGroup>
 	<ItemGroup>
+		<Folder Include="Dtos/" />
 		<Folder Include="Expenses\" />
 		<Folder Include="Expenses\GettingExpenses\" />
 		<Folder Include="Storage\" />
