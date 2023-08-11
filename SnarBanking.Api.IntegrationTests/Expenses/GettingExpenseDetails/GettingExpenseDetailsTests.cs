@@ -23,13 +23,13 @@ namespace SnarBanking.Api.IntegrationTests.Expenses.GettingExpenseDetails
             [Fact]
             public async Task Return_Expense_Details_When_Expense_Exists()
             {
-                var getExpenseDetailsRequest = new GetExpenseDetails.ById("64986a2e6512f7e2d0ccb621");
+                var getExpenseDetailsRequest = new GetExpenseDetails.ById("64986a2e6512f7e2d0ccb622");
 
                 var result = await _waf.SendAsync(getExpenseDetailsRequest);
 
                 result.ShouldNotBeNull();
-                result.Description.ShouldBe("Expense description 1");
-                result.Amount.Value.ShouldBe(11.50M);
+                result.Description.ShouldBe("Expense description 2");
+                result.Amount.Value.ShouldBe(12.50M);
             }
 
             [Fact]
