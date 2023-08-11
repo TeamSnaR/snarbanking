@@ -8,9 +8,9 @@ namespace SnarBanking.Expenses.UpdatingExpense;
 
 internal static class UpdateExpense
 {
-    internal record Command(string ExpenseId, ExpenseDto ExpenseToUpdate) : IRequest;
+    internal record Command(string ExpenseId, ExpenseDto ExpenseToUpdate) : IRequest<long>;
 
-    internal class Handler : IRequestHandler<Command>
+    internal class Handler : IRequestHandler<Command, long>
     {
         private readonly IGenericWriteService<Expense> _expenseWriteService;
         private readonly IValidator<ExpenseDto> _validator;
@@ -21,7 +21,7 @@ internal static class UpdateExpense
             _validator = validator;
         }
 
-        public async Task Handle(Command request, CancellationToken cancellationToken)
+        public async Task<long> Handle(Command request, CancellationToken cancellationToken)
         {
             await _validator.ValidateAndThrowAsync(request.ExpenseToUpdate, cancellationToken);
 
@@ -30,7 +30,9 @@ internal static class UpdateExpense
                 Id = request.ExpenseId
             };
 
-            await _expenseWriteService.ReplaceOneAsync(request.ExpenseId, expense);
+            var result = await _expenseWriteService.ReplaceOneAsync(request.ExpenseId, expense);
+
+            return result == 0 ? throw new ExpenseUpdateException("Expense not updated") : result;
         }
     }
 }
