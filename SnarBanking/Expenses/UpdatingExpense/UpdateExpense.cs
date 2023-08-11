@@ -4,7 +4,7 @@ using SnarBanking.Expenses;
 using SnarBanking.Core;
 using FluentValidation;
 
-namespace SnarBanking;
+namespace SnarBanking.Expenses.UpdatingExpense;
 
 internal static class UpdateExpense
 {
@@ -25,7 +25,12 @@ internal static class UpdateExpense
         {
             await _validator.ValidateAndThrowAsync(request.ExpenseToUpdate, cancellationToken);
 
-            await _expenseWriteService.UpdateOneAsync(request.ExpenseId, new Expense(request.ExpenseToUpdate.Description, request.ExpenseToUpdate.Amount, request.ExpenseToUpdate.Category, request.ExpenseToUpdate.Store, request.ExpenseToUpdate.PurchaseDate));
+            Expense expense = new(request.ExpenseToUpdate.Description, request.ExpenseToUpdate.Amount, request.ExpenseToUpdate.Category, request.ExpenseToUpdate.Store, request.ExpenseToUpdate.PurchaseDate)
+            {
+                Id = request.ExpenseId
+            };
+
+            await _expenseWriteService.ReplaceOneAsync(request.ExpenseId, expense);
         }
     }
 }

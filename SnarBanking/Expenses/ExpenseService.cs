@@ -67,11 +67,10 @@ public class ExpenseService : IGenericService<Expense>, IGenericWriteService<Exp
         throw new NotImplementedException();
     }
 
-    public Task UpdateOneAsync(string expenseId, Expense entity) =>
-        _snarBankingMongoDbService.ExpensesCollection
-            .ReplaceOneAsync(
-                expense => expense.Id == expenseId,
-                entity,
-                new ReplaceOptions { IsUpsert = false }
-            );
+    public Task ReplaceOneAsync(string expenseId, Expense entity)
+    {
+        var filter = Builders<Expense>.Filter.Eq(e => e.Id, expenseId);
+
+        return _snarBankingMongoDbService.ExpensesCollection.ReplaceOneAsync(filter, entity, new ReplaceOptions { IsUpsert = false });
+    }
 }
