@@ -74,4 +74,13 @@ public class ExpenseService : IGenericService<Expense>, IGenericWriteService<Exp
         return _snarBankingMongoDbService.ExpensesCollection
         .ReplaceOneAsync(filter, entity, new ReplaceOptions { IsUpsert = false }).ContinueWith(replaceOneResult => replaceOneResult.Result.ModifiedCount);
     }
+
+    public Task<long> DeleteOneAsync(string id)
+    {
+        var filter = Builders<Expense>.Filter.Eq(e => e.Id, id);
+
+        return _snarBankingMongoDbService.ExpensesCollection
+            .DeleteOneAsync(filter)
+            .ContinueWith(deleteOneResult => deleteOneResult.Result.DeletedCount);
+    }
 }
