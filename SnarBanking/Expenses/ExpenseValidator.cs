@@ -2,7 +2,7 @@
 
 using FluentValidation;
 
-namespace SnarBanking.Expenses.AddingExpense
+namespace SnarBanking.Expenses
 {
     public class ExpenseValidator : AbstractValidator<ExpenseDto>
     {

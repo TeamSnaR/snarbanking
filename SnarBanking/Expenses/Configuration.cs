@@ -28,7 +28,8 @@ namespace SnarBanking.Expenses
             endpoints
                 .UseAddingExpenseEndpoints()
                 .UseGettingExpenseDetailsEndpoint()
-                .UseGetExpensesEndpoint(); // points to endpoint folder
+                .UseGetExpensesEndpoint()
+                .UseUpdatingExpenseEndpoints(); // points to endpoint folder
 
             return endpoints;
         }

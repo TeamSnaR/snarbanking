@@ -1,5 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
+using SnarBanking.Expenses;
+
 namespace SnarBanking.Expenses;
 
 public record ExpenseDto(
